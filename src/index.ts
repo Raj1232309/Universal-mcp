@@ -18,7 +18,7 @@ import { graphify } from "./memory/graphify.js";
 import { orchestrator } from "./orchestration/ohmypi.js";
 import { UNIVERSAL_ORCHESTRATOR_PROMPT } from "./prompts/systemPrompt.js";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 // Session State Tracking for Multi-Client Support
 interface SessionState {
