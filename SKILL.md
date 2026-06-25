@@ -42,23 +42,31 @@ graph TD
 
 ## 🛠️ Step-by-Step Orchestration Guide
 
-### Step 1: Initialize the Design System & Foundation
-1. **Load Capabilities**: `open-design` (always use open-design for the design foundation), `frontend-design` (strictly adhere to these agent prompt guidelines), `taste-skill` (always use taste-skill for color selection and aesthetic taste), `impeccable`, `emil-design-eng`.
+### Step 1: Initial Design Foundation (open-design first)
+1. **Load Capabilities**: `open-design` (which must be used to generate the initial layout and styling foundation), and `frontend-design` (whose agent prompt guidelines must be strictly followed).
 2. **Setup Variables**: Initialize `index.css` with HSL variables (supporting light/dark mode, semantic tokens, and smooth transitions).
-3. **Typography & Layout**: Standardize spacing and typographic scale.
-4. **Load Training Data**: Verify that Graphify has retrieved the design system guidelines from `awesome-design-md` (such as Stripe, Linear, Vercel, Apple) based on the user's brief, and incorporate those specific design tokens, layout styles, and palettes.
+3. **Load Training Data**: Verify that Graphify has retrieved the design system guidelines from `awesome-design-md` (such as Stripe, Linear, Vercel, Apple) based on the user's brief, and incorporate those specific design tokens, layout styles, and palettes.
 
 ### Step 2: Assemble Components & Layout
 1. **Load Capabilities**: `shadcn`, `21st.dev`, `aceternity-ui`, `VengenceUI`, `react-bits`, `magicui`.
 2. **Build Layout**: Assemble using semantic HTML5 tags (`<main>`, `<section>`, `<nav>`, `<footer>`).
 3. **Premium Details**: Implement interactive UI cards with glassmorphism, card border gradients, and hover effects.
+4. **Animate All Components**: Ensure all components feature appropriate transitions and animations (such as entrance, exit, scroll-triggered reveals, interactive hover/active states, and ambient micro-animations) using `gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`, `threejs-animation`, `morphing-icons`, or `animotion-mcp`.
 
-### Step 3: Implement Dynamic Motion
-1. **Load Capabilities**: `gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`, `threejs-animation`, `morphing-icons`, `animotion-mcp`.
-2. **Entrance Animations**: Use GSAP to animate hero elements on load with staggers.
-3. **Scroll Animations**: Bind layouts to `ScrollTrigger` for smooth parallax, scroll-reveals, and pinned sections.
-4. **Micro-interactions**: Use `morphing-icons` for state transitions (e.g., play/pause, menu open/close).
-5. **Animation Coverage**: Ensure all components feature appropriate transitions and animations (such as entrance, exit, scroll-triggered reveals, interactive hover/active states, and ambient micro-animations) to feel modern, cohesive, and dynamic.
+### Step 3: Further Refinement & Code Validation
+1. **Load Capabilities**: All other secondary skills and MCP tools (like debug-skill, mapcn, canvas-design).
+2. **Refine layout & structure**: Perform adjustments to CSS specificities, typography spacing, and code safety. Run debugging passes to verify compiler/runtime integrity.
+
+### Step 4: Final Premium Polish (Taste & Impeccable at the end)
+1. **Load Capabilities**: `taste-skill` and `impeccable` (which must specifically be executed at the end of the design/assembly sequence to polish the visual outcome).
+2. **Color & Styling Polish**:
+   - **Dark Mode Check**: If using a dark background, never use rainbow colors/gradients. Use bold, clean, premium colors.
+   - **Glow Effect Check**: Avoid excessive glow effects. Keep all shadows, border glows, and light streaks extremely subtle and clean to maintain a premium feel.
+
+### Step 5: Visual Quality Check (Playwright-MCP) & Self-Critique
+1. **Load Capabilities**: `playwright-mcp`.
+2. **Visual Review**: Run playwright tests to capture screenshots, inspect layout alignment, color variables, typographic harmony, and ensure it does not look like AI slop.
+3. **Critique Pass**: Self-critique the design for zero placeholders, animation fluidity, color contrast, and premium aesthetic polish.
 
 ---
 

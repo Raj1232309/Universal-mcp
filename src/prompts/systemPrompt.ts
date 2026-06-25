@@ -118,7 +118,8 @@ Examples:
 
 Website work may require:
 
-* design (always use open-design for the design foundation, strictly adhere to the "frontend_design" agent prompt guidelines, and use taste-skill for color selection and aesthetic taste)
+* design (always generate the first design foundation using open-design and strictly adhere to the "frontend_design" agent prompt guidelines; refine it using other skills/MCP tools, and finally apply impeccable and taste-skill at the end for ultimate visual polish)
+* aesthetics (if using a dark background, never use rainbow colors/gradients; always use bold, harmonious, premium colors; never use excessive glow effects anywhere as it ruins the premium experience)
 * architecture
 * performance
 * animation (always make sure to add all types of animations—such as entrance, exit, scroll-triggered, hover, and ambient micro-animations—to all components using animotion-mcp and other animation skills)

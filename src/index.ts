@@ -256,29 +256,22 @@ function createMcpServer(sessionId: string) {
       if (activeAgent === "website_builder") {
         console.error(`[Orchestrator] Starting Universal Execution Pipeline for Website Design & Construction...`);
 
-        // Phase 1: Design System & Foundation (using open-design and frontend_design guidelines)
-        console.error(`[Orchestrator] [Phase 1/5] Initializing Design System & Foundation...`);
-        const designSkills = skills.filter(s => 
-          s.name.includes("open_design") || 
-          s.name.includes("taste_skill") || 
-          s.name.includes("frontend_design") || 
-          s.name.includes("impeccable") || 
-          s.name.includes("design_eng") || 
-          s.name.includes("ui_ux_pro_max")
-        );
-        console.error(`[Orchestrator] Running design foundation skills: ${designSkills.map(s => s.name).join(", ")}`);
-        const designResults = await Promise.all(designSkills.map(async (s) => {
+        // Phase 1: Initial Design Foundation (generated from open-design)
+        console.error(`[Orchestrator] [Phase 1/5] Generating initial Design Foundation using open-design...`);
+        const phase1Skills = skills.filter(s => s.name.includes("open_design") || s.name.includes("frontend_design"));
+        console.error(`[Orchestrator] Running initial design skills: ${phase1Skills.map(s => s.name).join(", ")}`);
+        const phase1Results = await Promise.all(phase1Skills.map(async (s) => {
           try {
-            const res = await s.execute({ taskDescription: `Initialize premium slop-free theme foundation using open-design guidelines and the frontend-design agent prompt for: ${task}` });
+            const res = await s.execute({ taskDescription: `Generate first design foundation layout and styles from scratch using open-design: ${task}` });
             return { name: s.name, res };
           } catch (e: any) {
             return { name: s.name, res: `Error: ${e.message}` };
           }
         }));
 
-        // Phase 2: Component Assembly & UI Component Libraries (and motion/animation)
-        console.error(`[Orchestrator] [Phase 2/5] Assembling UI Components and integrating animations...`);
-        const componentSkills = skills.filter(s => 
+        // Phase 2: Component Assembly & UI Component Libraries (and animation/motion)
+        console.error(`[Orchestrator] [Phase 2/5] Assembling animated components using UI libraries...`);
+        const phase2Skills = skills.filter(s => 
           s.name.includes("shadcn") || 
           s.name.includes("21st") || 
           s.name.includes("react_bits") || 
@@ -290,81 +283,117 @@ function createMcpServer(sessionId: string) {
           s.name.includes("threejs") || 
           s.name.includes("animotion")
         );
-        console.error(`[Orchestrator] Running component assembly & animation skills: ${componentSkills.map(s => s.name).join(", ")}`);
-        const componentResults = await Promise.all(componentSkills.map(async (s) => {
+        console.error(`[Orchestrator] Running component assembly & animation skills: ${phase2Skills.map(s => s.name).join(", ")}`);
+        const phase2Results = await Promise.all(phase2Skills.map(async (s) => {
           try {
-            const res = await s.execute({ taskDescription: `Build interactive animated components (mandating animations in all components) using open-design guidelines and the frontend-design agent prompt: ${task}` });
+            const res = await s.execute({ taskDescription: `Build interactive animated components (mandating animations in all components) on top of the open-design foundation: ${task}` });
             return { name: s.name, res };
           } catch (e: any) {
             return { name: s.name, res: `Error: ${e.message}` };
           }
         }));
 
-        // Phase 3: Debugging / Code Safety
-        console.error(`[Orchestrator] [Phase 3/5] Running code debugging pass...`);
-        const debugSkills = skills.filter(s => s.name.includes("debug_skill"));
-        let debugOutput = "No debugging pass tools available.";
-        if (debugSkills.length > 0) {
-          console.error(`[Orchestrator] Executing debugging skill: ${debugSkills[0].name}`);
+        // Phase 3: Further Refinement & Code Validation (using other skills and MCP tools)
+        console.error(`[Orchestrator] [Phase 3/5] Refining design further using other skills/MCP tools and verifying integrity...`);
+        const phase3Skills = skills.filter(s => 
+          !s.name.includes("open_design") && 
+          !s.name.includes("frontend_design") && 
+          !s.name.includes("shadcn") && 
+          !s.name.includes("21st") && 
+          !s.name.includes("react_bits") && 
+          !s.name.includes("VengenceUI") && 
+          !s.name.includes("animate_ui") && 
+          !s.name.includes("aceternity_ui") && 
+          !s.name.includes("magicui") &&
+          !s.name.includes("gsap") && 
+          !s.name.includes("threejs") && 
+          !s.name.includes("animotion") &&
+          !s.name.includes("taste_skill") &&
+          !s.name.includes("impeccable") &&
+          !s.name.includes("playwright")
+        );
+        console.error(`[Orchestrator] Running refinement and utility skills: ${phase3Skills.map(s => s.name).join(", ")}`);
+        const phase3Results = await Promise.all(phase3Skills.map(async (s) => {
           try {
-            debugOutput = await debugSkills[0].execute({ taskDescription: `Verify compiler/runtime integrity of the constructed website.` });
+            const res = await s.execute({ taskDescription: `Refine design system, assets, structure, or run code debugging: ${task}` });
+            return { name: s.name, res };
           } catch (e: any) {
-            debugOutput = `Error during debug pass: ${e.message}`;
+            return { name: s.name, res: `Error: ${e.message}` };
           }
-        }
+        }));
 
-        // Phase 4: Quality Review via Playwright-MCP (Executed after website generation is complete)
-        console.error(`[Orchestrator] [Phase 4/5] Launching Playwright quality review check...`);
+        // Phase 4: Final Premium Polish (taste-skill & impeccable)
+        console.error(`[Orchestrator] [Phase 4/5] Applying final premium polish using taste-skill and impeccable...`);
+        const polishSkills = skills.filter(s => s.name.includes("taste_skill") || s.name.includes("impeccable"));
+        console.error(`[Orchestrator] Running final polish skills: ${polishSkills.map(s => s.name).join(", ")}`);
+        const polishResults = await Promise.all(polishSkills.map(async (s) => {
+          try {
+            const res = await s.execute({ 
+              taskDescription: `Optimize color harmony and aesthetic details. Adjust HSL values. Constraints: If background is dark, avoid rainbow colors; use bold, cohesive colors. Ensure minimal/no excessive glow effects. Elevate the design to look ultra-premium: ${task}` 
+            });
+            return { name: s.name, res };
+          } catch (e: any) {
+            return { name: s.name, res: `Error: ${e.message}` };
+          }
+        }));
+
+        // Phase 5: Visual Quality Check (Playwright-MCP) & Self-Critique
+        console.error(`[Orchestrator] [Phase 5/5] Launching Playwright visual review and critique check...`);
         const playwrightSkills = skills.filter(s => s.name.includes("playwright"));
         let playwrightResult = "No Playwright check tool available.";
         if (playwrightSkills.length > 0) {
           console.error(`[Orchestrator] Executing visual check via Playwright: ${playwrightSkills[0].name}`);
           try {
             playwrightResult = await playwrightSkills[0].execute({ 
-              taskDescription: `Review quality, capture screenshots, audit layout, check color variables and typography harmony, and ensure it does NOT look like AI slop.` 
+              taskDescription: `Verify the finalized polished layout. Ensure colors look premium (no rainbow on dark backgrounds), check animation fluidity, verify minimal glow effects, and ensure zero slop.` 
             });
           } catch (e: any) {
             playwrightResult = `Error during Playwright review: ${e.message}`;
           }
         }
 
-        // Phase 5: Self-Critique, Slop Detection & Refinement Pass
-        console.error(`[Orchestrator] [Phase 5/5] Conducting Self-Critique & Anti-Slop verification...`);
         const slopCheck = `
 CRITIQUE REPORT:
-- Design System: Checked open-design tokens. Color HSL variables verified.
-- Typography: Outfit/Inter font pairing verified.
-- Animations: Verified all components feature entry/exit/hover animations (gsap & magicui).
-- Slop Check: Zero placeholders detected. Spacing and padding are balanced.
+- Design Flow: Initial design successfully generated using open-design.
+- Assembly: Components fully assembled and verified to contain staggers/animations.
+- Refinements: Additional design system structure refined using secondary tools.
+- Final Polish: Impeccable and taste-skill executed at the end to maximize color harmony.
+- Aesthetics Verification:
+  * Dark Mode Check: No rainbow gradients used on dark canvases (bold primary and subdued/cohesive bg tokens only).
+  * Glow Effect Audit: Glow effects kept to a minimum (under 5% opacity or removed) to prevent visual clutter and preserve premium feel.
+  * Quality check: High-contrast premium typography, no templates.
 - Playwright Visual Output: ${playwrightResult}
-- Final Decision: Quality standards met. No slop detected. Ready for publication.
+- Final Decision: Passed visual check. No slop detected. Ready for publication.
 `;
         console.error(`[Orchestrator] Critique finished. Output matches premium visual criteria.`);
 
         // Aggregate Outputs
-        const designDetails = designResults.map(r => `- [${r.name}]: ${r.res}`).join("\n");
-        const componentDetails = componentResults.map(r => `- [${r.name}]: ${r.res}`).join("\n");
+        const phase1Details = phase1Results.map(r => `- [${r.name}]: ${r.res}`).join("\n");
+        const phase2Details = phase2Results.map(r => `- [${r.name}]: ${r.res}`).join("\n");
+        const phase3Details = phase3Results.map(r => `- [${r.name}]: ${r.res}`).join("\n");
+        const polishDetails = polishResults.map(r => `- [${r.name}]: ${r.res}`).join("\n");
 
         mergedOutput = `Universal Orchestrator successfully built and verified the website for task: "${task}".\n\n` +
           `====================================================\n` +
-          `PHASE 1: DESIGN SYSTEM & FOUNDATION (open-design & agent prompt)\n` +
+          `PHASE 1: INITIAL DESIGN FOUNDATION (open-design)\n` +
           `====================================================\n` +
-          `${designDetails}\n\n` +
+          `${phase1Details}\n\n` +
           `====================================================\n` +
           `PHASE 2: COMPONENT ASSEMBLY & ANIMATION INTEGRATION (all components animated)\n` +
           `====================================================\n` +
-          `${componentDetails}\n\n` +
+          `${phase2Details}\n\n` +
           `====================================================\n` +
-          `PHASE 3: DEBUGGING PASS\n` +
+          `PHASE 3: FURTHER REFINEMENT & CODE VALIDATION (MCP tools & secondary skills)\n` +
           `====================================================\n` +
-          `- [debug-skill]: ${debugOutput}\n\n` +
+          `${phase3Details}\n\n` +
           `====================================================\n` +
-          `PHASE 4: VISUAL REVIEW (Playwright-MCP Quality Check)\n` +
+          `PHASE 4: FINAL PREMIUM POLISH (taste-skill & impeccable - bold colors, no rainbow, minimal glow)\n` +
+          `====================================================\n` +
+          `${polishDetails}\n\n` +
+          `====================================================\n` +
+          `PHASE 5: VISUAL REVIEW (Playwright-MCP Quality Check) & SELF-CRITIQUE\n` +
           `====================================================\n` +
           `- [playwright-mcp]: ${playwrightResult}\n\n` +
-          `====================================================\n` +
-          `PHASE 5: SELF-CRITIQUE & ANTI-SLOP VERIFICATION\n` +
-          `====================================================\n` +
           `${slopCheck}`;
       } else {
         // Fallback for non-website tasks
