@@ -31,7 +31,7 @@ graph TD
     D --> D1[shadcn / 21st.dev / react-bits]
     D --> D2[VengenceUI]
     D --> D3[aceternity-ui]
-    E --> E1[gsap-core / gsap-scrolltrigger]
+    E --> E1[gsap-core / gsap-scrolltrigger / animotion-mcp]
     E --> E2[threejs-animation]
     E --> E3[morphing-icons]
 ```
@@ -51,7 +51,7 @@ graph TD
 3. **Premium Details**: Implement interactive UI cards with glassmorphism, card border gradients, and hover effects.
 
 ### Step 3: Implement Dynamic Motion
-1. **Load Capabilities**: `gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`, `threejs-animation`, `morphing-icons`.
+1. **Load Capabilities**: `gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`, `threejs-animation`, `morphing-icons`, `animotion-mcp`.
 2. **Entrance Animations**: Use GSAP to animate hero elements on load with staggers.
 3. **Scroll Animations**: Bind layouts to `ScrollTrigger` for smooth parallax, scroll-reveals, and pinned sections.
 4. **Micro-interactions**: Use `morphing-icons` for state transitions (e.g., play/pause, menu open/close).
