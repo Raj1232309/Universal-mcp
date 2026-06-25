@@ -28,7 +28,7 @@ graph TD
     C --> C1[taste-skill]
     C --> C2[emil-design-eng]
     C --> C3[impeccable]
-    D --> D1[shadcn / 21st.dev]
+    D --> D1[shadcn / 21st.dev / react-bits]
     D --> D2[VengenceUI]
     D --> D3[aceternity-ui]
     E --> E1[gsap-core / gsap-scrolltrigger]
@@ -46,7 +46,7 @@ graph TD
 3. **Typography & Layout**: Standardize spacing and typographic scale.
 
 ### Step 2: Assemble Components & Layout
-1. **Load Capabilities**: `shadcn`, `21st.dev`, `aceternity-ui`, `VengenceUI`.
+1. **Load Capabilities**: `shadcn`, `21st.dev`, `aceternity-ui`, `VengenceUI`, `react-bits`.
 2. **Build Layout**: Assemble using semantic HTML5 tags (`<main>`, `<section>`, `<nav>`, `<footer>`).
 3. **Premium Details**: Implement interactive UI cards with glassmorphism, card border gradients, and hover effects.
 
