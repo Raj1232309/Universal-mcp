@@ -17,7 +17,8 @@ export const AGENT_CONFIG: Record<string, AgentConfig> = {
       "https://github.com/Ashutoshx7/VengenceUI.git",
       "https://github.com/imskyleen/animate-ui.git",
       "https://github.com/serafimcloud/21st.git",
-      "npx shadcn@latest mcp init --client vscode"
+      "npx shadcn@latest mcp init --client vscode",
+      "https://github.com/DavidHDev/react-bits.git"
     ]
   },
   motion_animation: {
