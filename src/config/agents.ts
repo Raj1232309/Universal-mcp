@@ -5,6 +5,10 @@ export interface AgentConfig {
 export const AGENT_CONFIG: Record<string, AgentConfig> = {
   website_builder: {
     skills: [
+      "https://github.com/nexu-io/open-design.git",
+      "https://github.com/microsoft/playwright-mcp.git",
+      "https://github.com/AlmogBaku/debug-skill.git",
+      "https://github.com/AnmolSaini16/mapcn.git",
       "npx skills add https://github.com/Dammyjay93/interface-design",
       "npx skills add https://github.com/Leonxlnx/taste-skill",
       "npx skills add https://github.com/anthropics/skills --skill frontend-design",
@@ -58,6 +62,7 @@ export const AGENT_CONFIG: Record<string, AgentConfig> = {
   },
   coding: {
     skills: [
+      "https://github.com/AlmogBaku/debug-skill.git",
       "npx skills@latest add mattpocock/skills --all"
     ]
   },

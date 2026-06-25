@@ -25,9 +25,10 @@ graph TD
     B --> C[Design Foundation]
     B --> D[Premium Components]
     B --> E[Dynamic Motion]
-    C --> C1[taste-skill]
-    C --> C2[emil-design-eng]
-    C --> C3[impeccable]
+    C --> C1[open-design]
+    C --> C2[taste-skill]
+    C --> C3[emil-design-eng]
+    C --> C4[impeccable]
     D --> D1[shadcn / 21st.dev / react-bits]
     D --> D2[VengenceUI]
     D --> D3[aceternity-ui]
@@ -41,7 +42,7 @@ graph TD
 ## 🛠️ Step-by-Step Orchestration Guide
 
 ### Step 1: Initialize the Design System & Foundation
-1. **Load Capabilities**: `frontend-design`, `taste-skill`, `impeccable`, `emil-design-eng`.
+1. **Load Capabilities**: `open-design`, `frontend-design`, `taste-skill`, `impeccable`, `emil-design-eng`.
 2. **Setup Variables**: Initialize `index.css` with HSL variables (supporting light/dark mode, semantic tokens, and smooth transitions).
 3. **Typography & Layout**: Standardize spacing and typographic scale.
 

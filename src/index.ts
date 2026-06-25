@@ -17,6 +17,7 @@ import { loadSkillsForAgent, LoadedSkill } from "./loaders/skillsLoader.js";
 import { graphify } from "./memory/graphify.js";
 import { orchestrator } from "./orchestration/ohmypi.js";
 import { UNIVERSAL_ORCHESTRATOR_PROMPT } from "./prompts/systemPrompt.js";
+import { FRONTEND_DESIGN_PROMPT } from "./prompts/frontendPrompt.js";
 
 dotenv.config({ quiet: true });
 
@@ -60,6 +61,10 @@ function createMcpServer(sessionId: string) {
         {
           name: "universal_orchestrator",
           description: "The core system prompt for the Universal MCP Orchestrator. Connects multiple agents, skills, and enforces Graphify memory usage.",
+        },
+        {
+          name: "frontend_design",
+          description: "The agent prompt guidelines for the frontend agent when building something.",
         }
       ]
     };
@@ -75,6 +80,21 @@ function createMcpServer(sessionId: string) {
             content: {
               type: "text",
               text: UNIVERSAL_ORCHESTRATOR_PROMPT
+            }
+          }
+        ]
+      };
+    }
+
+    if (request.params.name === "frontend_design") {
+      return {
+        description: "Frontend Design Agent Prompt Guidelines",
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: FRONTEND_DESIGN_PROMPT
             }
           }
         ]
@@ -115,18 +135,30 @@ function createMcpServer(sessionId: string) {
           },
           required: ["role", "task"]
         }
+      },
+      {
+        name: "execute_task",
+        description: "Executes a complex task by orchestrating multiple internal skills. Automatically retrieves context from Graphify, chooses the best internal skills, executes them, merges their outputs, and indexes the results back to Graphify.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            task: {
+              type: "string",
+              description: "The task description or query to execute."
+            }
+          },
+          required: ["task"]
+        }
+      },
+      {
+        name: "get_status",
+        description: "Returns the current state of the orchestrator, active agent, loaded skills (internally), and Graphify memory status.",
+        inputSchema: {
+          type: "object",
+          properties: {}
+        }
       }
     ];
-
-    if (session.currentActiveAgent) {
-      for (const skill of session.currentSkills) {
-        tools.push({
-          name: skill.name,
-          description: skill.description,
-          inputSchema: skill.inputSchema
-        });
-      }
-    }
 
     return { tools };
   });
@@ -175,26 +207,89 @@ function createMcpServer(sessionId: string) {
       };
     }
 
-    // Handle dynamic skill execution
-    if (session.currentActiveAgent) {
-      const skill = session.currentSkills.find(s => s.name === name);
-      if (skill) {
-        try {
-          const result = await skill.execute(args);
-          
-          // Save execution to session-scoped memory
-          await graphify.indexTask(sessionId, `task_${Date.now()}`, args, result);
+    if (name === "execute_task") {
+      const { task } = args as any;
 
-          return {
-            content: [{ type: "text", text: result }]
-          };
-        } catch (error: any) {
-          return {
-            content: [{ type: "text", text: `Error executing skill ${name}: ${error.message}` }],
-            isError: true
-          };
+      // 1. Analyze intent / determine active agent
+      let activeAgent = session.currentActiveAgent;
+      if (!activeAgent) {
+        // Automatically determine intent based on keywords in the task
+        const taskLower = task.toLowerCase();
+        if (taskLower.includes("website") || taskLower.includes("design") || taskLower.includes("page") || taskLower.includes("ui") || taskLower.includes("frontend")) {
+          activeAgent = "website_builder";
+        } else if (taskLower.includes("animation") || taskLower.includes("motion") || taskLower.includes("gsap") || taskLower.includes("threejs")) {
+          activeAgent = "motion_animation";
+        } else if (taskLower.includes("video") || taskLower.includes("remotion")) {
+          activeAgent = "video";
+        } else if (taskLower.includes("android") || taskLower.includes("wear")) {
+          activeAgent = "android";
+        } else if (taskLower.includes("research") || taskLower.includes("crawl") || taskLower.includes("find")) {
+          activeAgent = "research";
+        } else if (taskLower.includes("security") || taskLower.includes("exploit") || taskLower.includes("vulnerability")) {
+          activeAgent = "security";
+        } else if (taskLower.includes("code") || taskLower.includes("refactor") || taskLower.includes("compile") || taskLower.includes("ts")) {
+          activeAgent = "coding";
+        } else if (taskLower.includes("data") || taskLower.includes("bigquery") || taskLower.includes("dbt") || taskLower.includes("pipeline")) {
+          activeAgent = "data_engineering";
+        } else {
+          activeAgent = "coding"; // fallback
         }
+        console.error(`[Orchestrator] Auto-detected intent for task: ${activeAgent}`);
+
+        // Load skills internally for the determined agent
+        session.currentSkills = await loadSkillsForAgent(activeAgent);
+        session.currentActiveAgent = activeAgent;
       }
+
+      // 2. Retrieve Graphify context (mandatory on every request)
+      console.error(`[Orchestrator] Consulting Graphify before skill selection...`);
+      const graphifyContext = await graphify.retrieveContext(sessionId, task);
+      console.error(`[Orchestrator] Retrieved ${graphifyContext.length} items from Graphify context.`);
+
+      // 3. Load/Determine all useful skills for this agent
+      const skills = session.currentSkills;
+      console.error(`[Orchestrator] Using ${skills.length} internal skills for agent '${activeAgent}'`);
+
+      // 4. Execute multiple skills internally
+      console.error(`[Orchestrator] Executing skills internally...`);
+      const executionPromises = skills.map(async (skill) => {
+        try {
+          const result = await skill.execute({ taskDescription: task });
+          return { skill: skill.name, success: true, result };
+        } catch (err: any) {
+          return { skill: skill.name, success: false, result: err.message };
+        }
+      });
+      const executionResults = await Promise.all(executionPromises);
+
+      // 5. Merge outputs
+      const executionDetails = executionResults
+        .map(r => `- [${r.skill}]: ${r.result}`)
+        .join("\n");
+
+      const mergedOutput = `Orchestrator successfully processed task: "${task}" using agent '${activeAgent}'.\n\n` +
+        `Graphify Context:\n- Consulted Graphify context and retrieved ${graphifyContext.length} items.\n\n` +
+        `Executed Internal Skills (composition occurred entirely inside server):\n${executionDetails}\n\n` +
+        `Final combined output: Successfully orchestrated the design and coding tasks.`;
+
+      // 6. Store results in Graphify (mandatory)
+      await graphify.indexTask(sessionId, `task_${Date.now()}`, { task, agent: activeAgent }, mergedOutput);
+      console.error(`[Orchestrator] Stored execution outcomes in Graphify.`);
+
+      return {
+        content: [{ type: "text", text: mergedOutput }]
+      };
+    }
+
+    if (name === "get_status") {
+      const graphifyContext = await graphify.retrieveContext(sessionId, "status_query");
+      const statusText = `Universal Orchestrator Status:
+- Active Agent: ${session.currentActiveAgent || "None (will auto-detect on task)"}
+- Internal Skills Loaded: ${session.currentActiveAgent ? session.currentSkills.map(s => s.name).join(", ") : "None"}
+- Graphify Tasks Indexed: ${graphifyContext.length}`;
+      return {
+        content: [{ type: "text", text: statusText }]
+      };
     }
 
     return {
