@@ -82,7 +82,7 @@ Never hardcode capability selection.
 
 For every task:
 
-1. Discover all available relevant capabilities (including design libraries like open-design, animation libraries like animotion-mcp, testing frameworks like playwright-mcp, and debugging tools like debug-skill).
+1. Discover all available relevant capabilities (including design libraries like \open-design\, animation libraries like animotion-mcp, testing frameworks like playwright-mcp, and debugging tools like debug-skill).
 2. Evaluate usefulness.
 3. Rank contributions.
 4. Select the strongest combination.
@@ -117,12 +117,12 @@ Examples:
 
 Website work may require:
 
-* design (always generate the first design foundation using open-design and strictly adhere to the "design_agent" prompt guidelines; this is the PRIMARY design system prompt for all web projects)
+* design (always generate the first design foundation using 'open-design' and strictly adhere to the 'design_agent' prompt guidelines; this is the PRIMARY design system prompt for all web projects)
 * React Bits components (MANDATORY: always use React Bits components for all UI elements — use react_bits_list_components, react_bits_get_source, and react_bits_search tools to discover and retrieve component source code; React Bits is available locally)
-* aesthetics (if using a dark background, never use rainbow colors/gradients; always use bold, harmonious, premium colors; never use excessive glow effects anywhere as it ruins the premium experience)
+* aesthetics (MANDATORY: always use the 'impeccable' skill for color palette and aesthetics. Colors must look clean, professional, and bold. Never use rainbow colors. On dark themes, NEVER use pink/purple gradients or light blue-greenish colors mixed with purple. Avoid AI slop.)
 * architecture
 * performance
-* animation (always make sure to add all types of animations—such as entrance, exit, scroll-triggered, hover, and ambient micro-animations—to all components using animotion-mcp and other animation skills; React Bits Animation and TextAnimation components cover most use cases)
+* animation (MANDATORY: add animations EVERYWHERE possible—entrance, exit, scroll-triggered, hover, and micro-animations—using animotion-mcp and React Bits. Make it feel alive.)
 * content
 * accessibility
 * optimization

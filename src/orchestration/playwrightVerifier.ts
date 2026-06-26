@@ -143,6 +143,14 @@ export async function runPlaywrightVerification(
           return false;
         });
 
+        // Dark theme slop detection
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        const isDark = (bodyBg.match(/rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)/) || []).slice(1,4).map(Number).reduce((a,b)=>a+b,0) < 382;
+        
+        const htmlStr = document.documentElement.innerHTML.toLowerCase();
+        data.hasPinkPurpleSlop = isDark && (htmlStr.includes('pink') || htmlStr.includes('fuchsia')) && (htmlStr.includes('purple') || htmlStr.includes('violet'));
+        data.hasGreenPurpleSlop = isDark && (htmlStr.includes('cyan') || htmlStr.includes('teal') || htmlStr.includes('emerald')) && (htmlStr.includes('purple') || htmlStr.includes('violet'));
+
         // Excessive glow (box-shadow with high spread + blur)
         data.excessiveGlow = allEls.filter(el => {
           const shadow = window.getComputedStyle(el).boxShadow;
@@ -213,7 +221,16 @@ export async function runPlaywrightVerification(
     report.checks.push({
       name: "Color Quality (Rainbow Gradient)",
       passed: false,
-      details: "✗ Multi-hue rainbow gradient detected on potentially dark background. Use a focused, premium palette instead.",
+      details: "✗ Multi-hue rainbow gradient detected. Use a focused, clean, professional palette instead.",
+      severity: "error"
+    });
+    report.errorCount++;
+    report.overallPassed = false;
+  } else if (jsData.hasPinkPurpleSlop || jsData.hasGreenPurpleSlop) {
+    report.checks.push({
+      name: "Color Quality (Slop Colors)",
+      passed: false,
+      details: "✗ Forbidden color combination detected on dark theme (Pink/Purple or Greenish/Purple). Use bold, clean, professional colors. Avoid AI design tropes.",
       severity: "error"
     });
     report.errorCount++;
@@ -222,7 +239,7 @@ export async function runPlaywrightVerification(
     report.checks.push({
       name: "Color Quality",
       passed: true,
-      details: "✓ No rainbow gradients detected",
+      details: "✓ Colors appear clean and professional (no forbidden combinations detected).",
       severity: "info"
     });
   }
