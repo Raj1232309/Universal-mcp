@@ -37,21 +37,20 @@ Always optimize for outcome quality.
 
 # Universal Execution Pipeline
 
-Every request must follow this process:
+Every significant request MUST follow this exact process:
 
-1. Retrieve relevant context and memory from Graphify.
-2. Analyze the request.
-3. Create an execution plan.
-4. Discover relevant capabilities.
-5. Rank available capabilities.
-6. Execute selected capabilities.
-7. Run a debugging pass (always debug using debug-skill before showing the final result).
-8. Aggregate outputs.
-9. Review quality (for website tasks, always use playwright-mcp to check if the website looks right or not).
-10. Run a Self-Critique Pass to check completeness and correctness.
-11. Improve if necessary.
-12. Store results and learning data.
-13. Return final response.
+1. **Retrieve memory** — Query Graphify for prior context, project history, and preferences.
+2. **Create Implementation Plan (PRD)** — BEFORE doing any work, call \`create_prd\` with the task description and agent type. Present the plan to the user. **Do NOT proceed until the user confirms** via \`confirm_prd\`. This is mandatory for all non-trivial requests (anything beyond a single quick answer).
+3. **Activate agent** — Call \`activate_agent\` with the appropriate intent to load skills and MCP servers.
+4. **Discover capabilities** — Enumerate available skills and MCP servers. Select only those that genuinely contribute to this specific task.
+5. **Plan sub-agent execution** — Group independent tasks into parallel batches. Only activate sub-agents when their output is strictly needed. Never run redundant or overlapping agents. Low-priority sub-agents are skipped if token budget is exhausted.
+6. **Execute** — Run the selected capabilities. For website tasks: retrieve React Bits component source code via \`react_bits_get_source\` before building any UI.
+7. **Run debug pass** — ALWAYS call \`run_debug_pass\` before showing any final result. This checks for JS errors, CSS conflicts, and logic bugs using the debug-skill and Playwright.
+8. **Playwright visual verification** — Call \`fork_verifier_agent\` to screenshot and check the output. Then call \`get_verifier_status\` to retrieve the report. Fix any errors before proceeding.
+9. **Self-critique** — Review completeness and correctness. Improve if deficiencies are found.
+10. **Push to GitHub** — After the task is fully complete, verified, and debugged, call \`push_to_github\` to commit and push. Uses conventional commits. Excludes skills/ and node_modules/ automatically.
+11. **Store results** — Update Graphify memory with task outcomes.
+12. **Return final response** — One coherent, clean result. No internal details exposed.
 
 This pipeline is mandatory.
 
@@ -118,14 +117,16 @@ Examples:
 
 Website work may require:
 
-* design (always generate the first design foundation using open-design and strictly adhere to the "frontend_design" agent prompt guidelines; refine it using other skills/MCP tools, and finally apply impeccable and taste-skill at the end for ultimate visual polish)
+* design (always generate the first design foundation using open-design and strictly adhere to the "design_agent" prompt guidelines; this is the PRIMARY design system prompt for all web projects)
+* React Bits components (MANDATORY: always use React Bits components for all UI elements — use react_bits_list_components, react_bits_get_source, and react_bits_search tools to discover and retrieve component source code; React Bits is available locally)
 * aesthetics (if using a dark background, never use rainbow colors/gradients; always use bold, harmonious, premium colors; never use excessive glow effects anywhere as it ruins the premium experience)
 * architecture
 * performance
-* animation (always make sure to add all types of animations—such as entrance, exit, scroll-triggered, hover, and ambient micro-animations—to all components using animotion-mcp and other animation skills)
+* animation (always make sure to add all types of animations—such as entrance, exit, scroll-triggered, hover, and ambient micro-animations—to all components using animotion-mcp and other animation skills; React Bits Animation and TextAnimation components cover most use cases)
 * content
 * accessibility
 * optimization
+* design verification (ALWAYS call fork_verifier_agent after completing any web design to run a background sub-agent that checks visual quality using Playwright; call get_verifier_status to retrieve the report)
 
 Research tasks may require:
 
@@ -286,13 +287,19 @@ No shared execution state between unrelated sessions.
 
 # Cost and Resource Optimization
 
-Quality is the primary objective.
+Quality is the primary objective. Efficiency is equally important.
 
-However:
+**Token efficiency rules (mandatory):**
+* Never run a sub-agent unless its output is strictly required for the task
+* Never call the same tool twice with the same arguments — results are cached
+* Batch independent sub-tasks and run them in parallel (one wave, not sequential chains)
+* Skip low-priority sub-agents if the token budget is over 85% utilized
+* Do not run every verification capability on every request — match verification depth to task complexity
+* Sub-agent results must be deduplicated before merging
 
-* avoid unnecessary work
-* avoid redundant execution
-* avoid duplicate processing
+**For simple requests** (single question, small fix): Skip PRD, skip sub-agents, answer directly.
+**For moderate tasks** (feature implementation, UI component): PRD + single-agent execution + debug pass + git push.
+**For complex tasks** (full website, multi-file feature): PRD + parallel sub-agents + Playwright verification + debug pass + git push.
 
 Use the smallest set of resources capable of achieving the desired quality.
 
