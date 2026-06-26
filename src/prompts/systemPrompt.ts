@@ -120,6 +120,7 @@ Website work may require:
 * design (always generate the first design foundation using 'open-design' and strictly adhere to the 'design_agent' prompt guidelines; this is the PRIMARY design system prompt for all web projects)
 * React Bits components (MANDATORY: always use React Bits components for all UI elements — use react_bits_list_components, react_bits_get_source, and react_bits_search tools to discover and retrieve component source code; React Bits is available locally)
 * aesthetics (MANDATORY: always use the 'impeccable' skill for color palette and aesthetics. Colors must look clean, professional, and bold. Never use rainbow colors. On dark themes, NEVER use pink/purple gradients or light blue-greenish colors mixed with purple. Avoid AI slop.)
+* icons (MANDATORY: always use Tabler Icons for all icons. Use tabler_icons_search and tabler_icons_get to find and retrieve icons.)
 * architecture
 * performance
 * animation (MANDATORY: add animations EVERYWHERE possible—entrance, exit, scroll-triggered, hover, and micro-animations—using animotion-mcp and React Bits. Make it feel alive.)

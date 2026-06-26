@@ -45,6 +45,19 @@ ASCIIText, BlurText, CircularText, CountUp, CurvedLoop, DecryptedText, FallingTe
 
 ---
 
+## Tabler Icons — MANDATORY Icon Library
+
+**Tabler Icons MUST be used for all icons.**
+Whenever an icon is placed on a website, you must use Tabler Icons.
+
+1. **Use the \`tabler_icons_search\` tool** to find the exact icon name you need (e.g., 'user', 'arrow-right').
+2. **Use the CDN approach** for HTML/JSX:
+   - Include the CSS in the head: \`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />\`
+   - Render the icon: \`<i class="ti ti-icon-name"></i>\`
+3. **Or use \`tabler_icons_get\`** if you need the raw SVG source code for inline injection.
+
+---
+
 ## Ground it in the subject
 
 If the brief does not pin down what the product or subject is, pin it yourself before designing: name one concrete subject, its audience, and the page's single job, and state your choice. If there's any information in your memory about the human's preferences, context about what they're building, or designs you've made before – use that as a hint. The subject's own world, its materials, instruments, artifacts, and vernacular, is where distinctive choices come from. Build with the brief's real content and subject matter throughout.

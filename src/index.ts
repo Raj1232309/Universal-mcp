@@ -49,6 +49,10 @@ import {
   gitAddCommitPush,
   buildCommitMessage
 } from "./orchestration/gitPusher.js";
+import {
+  searchTablerIcons,
+  getTablerIcon
+} from "./orchestration/tablerIconsManager.js";
 
 dotenv.config({ quiet: true });
 
@@ -412,6 +416,37 @@ function createMcpServer(sessionId: string) {
           },
           required: ["targetDescription"]
         }
+      },
+      // ------------------------------------------------
+      // Tabler Icons Tools
+      // ------------------------------------------------
+      {
+        name: "tabler_icons_search",
+        description: "Searches the Tabler Icons library for an icon by name or keyword. Returns matching icons and instructions on how to use them via CDN.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            query: {
+              type: "string",
+              description: "The search term (e.g., 'user', 'arrow', 'home')."
+            }
+          },
+          required: ["query"]
+        }
+      },
+      {
+        name: "tabler_icons_get",
+        description: "Retrieves the exact SVG source code for a Tabler Icon.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "The exact name of the icon (e.g., 'user', 'arrow-right')."
+            }
+          },
+          required: ["name"]
+        }
       }
     ];
 
@@ -548,6 +583,35 @@ function createMcpServer(sessionId: string) {
       }
 
       return { content: [{ type: "text", text: output }] };
+    }
+
+    // --------------------------------------------------------
+    // Tabler Icons Tool Handlers
+    // --------------------------------------------------------
+    if (name === "tabler_icons_search") {
+      const { query } = (args || {}) as { query: string };
+      if (!query) {
+        return { content: [{ type: "text", text: "Error: query is required" }], isError: true };
+      }
+      try {
+        const res = await searchTablerIcons(query);
+        return { content: [{ type: "text", text: res }] };
+      } catch (err: any) {
+        return { content: [{ type: "text", text: `Error searching icons: ${err.message}` }], isError: true };
+      }
+    }
+
+    if (name === "tabler_icons_get") {
+      const { name: iconName } = (args || {}) as { name: string };
+      if (!iconName) {
+        return { content: [{ type: "text", text: "Error: name is required" }], isError: true };
+      }
+      try {
+        const res = await getTablerIcon(iconName);
+        return { content: [{ type: "text", text: res }] };
+      } catch (err: any) {
+        return { content: [{ type: "text", text: `Error fetching icon: ${err.message}` }], isError: true };
+      }
     }
 
     // --------------------------------------------------------
