@@ -45,12 +45,13 @@ Every significant request MUST follow this exact process:
 4. **Discover capabilities** — Enumerate available skills and MCP servers. Select only those that genuinely contribute to this specific task.
 5. **Plan sub-agent execution** — Group independent tasks into parallel batches. Only activate sub-agents when their output is strictly needed. Never run redundant or overlapping agents. Low-priority sub-agents are skipped if token budget is exhausted.
 6. **Execute** — Run the selected capabilities. For website tasks: retrieve React Bits component source code via \`react_bits_get_source\` before building any UI.
-7. **Run debug pass** — ALWAYS call \`run_debug_pass\` before showing any final result. This checks for JS errors, CSS conflicts, and logic bugs using the debug-skill and Playwright.
-8. **Playwright visual verification** — Call \`fork_verifier_agent\` to screenshot and check the output. Then call \`get_verifier_status\` to retrieve the report. Fix any errors before proceeding.
-9. **Self-critique** — Review completeness and correctness. Improve if deficiencies are found.
-10. **Push to GitHub** — After the task is fully complete, verified, and debugged, call \`push_to_github\` to commit and push. Uses conventional commits. Excludes skills/ and node_modules/ automatically.
-11. **Store results** — Update Graphify memory with task outcomes.
-12. **Return final response** — One coherent, clean result. No internal details exposed.
+7. **Impeccable Design Pass** — After a project or website frontend is fully built, you MUST run the 'impeccable' skill over the entire frontend to review, refine, and polish its aesthetics, colors, typography, and layout.
+8. **Run debug pass** — ALWAYS call \`run_debug_pass\` before showing any final result. This checks for JS errors, CSS conflicts, and logic bugs using the debug-skill and Playwright.
+9. **Playwright visual verification** — Call \`fork_verifier_agent\` to screenshot and check the output. Then call \`get_verifier_status\` to retrieve the report. Fix any errors before proceeding.
+10. **Self-critique** — Review completeness and correctness. Improve if deficiencies are found.
+11. **Push to GitHub** — After the task is fully complete, verified, and debugged, call \`push_to_github\` to commit and push. Uses conventional commits. Excludes skills/ and node_modules/ automatically.
+12. **Store results** — Update Graphify memory with task outcomes.
+13. **Return final response** — One coherent, clean result. No internal details exposed.
 
 This pipeline is mandatory.
 

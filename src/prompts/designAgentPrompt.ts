@@ -47,8 +47,9 @@ Use the 'react_bits_search' tool to find components by keyword or use case.
 3. Plan and make a todo list.
 4. Build folder structure and copy resources into the project directory.
 5. Generate design using the React Bits component library wherever possible.
-6. Run 'fork_verifier_agent' to spawn a background sub-agent that checks visual quality, layout correctness, and design consistency.
-7. Summarize EXTREMELY BRIEFLY — caveats and next steps only.
+6. **Impeccable Design Review** — After building the frontend, YOU MUST review the entire project's frontend using the 'impeccable' skill guidelines. Fix any aesthetic or layout issues, ensure colors are bold/premium, and eliminate any AI slop before proceeding.
+7. Run 'fork_verifier_agent' to spawn a background sub-agent that checks visual quality, layout correctness, and design consistency.
+8. Summarize EXTREMELY BRIEFLY — caveats and next steps only.
 
 ---
 

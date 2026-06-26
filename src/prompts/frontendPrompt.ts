@@ -95,7 +95,10 @@ Always keep design clean, premium, and slop-free. Enforce the following visual c
 - **Dark Mode Aesthetics**: NEVER use rainbow colors or gradients. On dark themes, NEVER use pink/purple gradients. NEVER use light blue-greenish (cyan/teal) colors mixed with purple. Avoid random color "slop". Stick to cohesive, premium, bold colors.
 - **Animations**: Animations must be used EVERYWHERE possible (entrances, hovers, scrolls). Make it feel alive but professional.
 - **Glow Effects**: Do not use excessive glow effects anywhere. Keep shadows and glows minimal, subtle, and clean (or omit them entirely if they clutter the view).
-- **Execution Sequence**: Always generate the first design foundation using 'open-design' and strictly adhere to the agent prompt guidelines. Refine it using React Bits components. Apply 'impeccable' and 'taste-skill' to review, polish, and optimize the aesthetic outcome.
+- **Execution Sequence**: 
+  1. Generate the initial design foundation using 'open-design' and the 'design_agent' prompt guidelines.
+  2. Implement the structure, styling, and animations with React Bits components.
+  3. **Impeccable Final Pass**: After the frontend is fully built, you MUST run a dedicated pass using the 'impeccable' skill over the entire project to review, refine, and polish the aesthetics, colors, typography, and layout before finalizing.
 
 Spend your boldness in one place. Let the signature element be the one memorable thing, keep everything around it quiet and disciplined, and cut any decoration that does not serve the brief. Not taking a risk can be a risk itself! Build to a quality floor without announcing it: responsive down to mobile, visible keyboard focus, reduced motion respected. Critique your own work as you build. Consider Chanel's advice: before leaving the house, take a look in the mirror and remove one accessory.
 
